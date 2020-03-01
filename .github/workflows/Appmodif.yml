@@ -1,0 +1,16 @@
+name: AppModif site CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the site in the appmodif/builder container
+      run: |
+        docker run \
+        -v ${{ github.workspace }}:/srv/appmodif -v ${{ github.workspace }}/_site:/srv/appmodif/_site \
+        jekyll/builder:latest /bin/bash -c "chmod 777 /srv/appmodif && appmodif build --future"
